@@ -33,6 +33,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -172,7 +173,8 @@ public final class Compiler {
 
     Set<String> permissions = Sets.newHashSet();
     for (String componentType : componentTypes) {
-      permissions.addAll(componentPermissions.get(componentType));
+    	if(!componentType.startsWith("WANDDY"))
+    		permissions.addAll(componentPermissions.get(componentType));
     }
     if (isForWireless) {      // This is so ACRA can do a logcat on phones older then Jelly Bean
       permissions.add("android.permission.READ_LOGS");
@@ -201,7 +203,8 @@ public final class Compiler {
 
     librariesNeeded = Sets.newHashSet();
     for (String componentType : componentTypes) {
-      librariesNeeded.addAll(componentLibraries.get(componentType));
+      if(!componentType.startsWith("WANDDY"))
+    	  librariesNeeded.addAll(componentLibraries.get(componentType));
     }
     System.out.println("Libraries needed, n= " + librariesNeeded.size());
   }
@@ -220,7 +223,21 @@ public final class Compiler {
     String vName = (project.getVName() == null) ? DEFAULT_VERSION_NAME : project.getVName();
     LOG.log(Level.INFO, "VCode: " + project.getVCode());
     LOG.log(Level.INFO, "VName: " + project.getVName());
-
+    //WANDDY
+    String screen1Title=projectName;
+    try{
+    Iterator it=this.componentTypes.iterator();
+    while(it.hasNext()){
+    	String tmp=it.next().toString();
+    	if(tmp.startsWith("WANDDY"))
+    	{
+    		screen1Title=tmp.substring(6);
+    	}
+    }
+    }catch(Exception ex)
+    {
+    	ex.printStackTrace();
+    }
     // TODO(user): Use com.google.common.xml.XmlWriter
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(manifestFile));
@@ -281,7 +298,7 @@ public final class Compiler {
       // TODONE(jis): Turned off debuggable. No one really uses it and it represents a security
       // risk for App Inventor App end-users.
       out.write("android:debuggable=\"false\" ");
-      out.write("android:label=\"" + projectName + "\" ");
+      out.write("android:label=\"" + screen1Title + "\" ");
       out.write("android:icon=\"@drawable/ya\" ");
       if (isForWireless) {              // This is to hook into ACRA
         out.write("android:name=\"com.google.appinventor.components.runtime.ReplApplication\" ");

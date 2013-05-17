@@ -94,7 +94,7 @@ public abstract class BlockNote extends JPanel {
   static final int FONT_SIZE = 11;
   private static final int MINIMUM_WIDTH = FONT_SIZE * 4;
   private static final int MINIMUM_HEIGHT = FONT_SIZE * 2;
-  static final String FONT_NAME = "Arial";
+  static final String FONT_NAME = "ËÎÌו";
 
   private boolean resizing = false;
   private int margin = 6;

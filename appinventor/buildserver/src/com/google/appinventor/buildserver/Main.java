@@ -43,7 +43,7 @@ public final class Main {
 
     @Option(name = "--childProcessRamMb",
             usage = "Maximum ram that can be used by a child processes, in MB.")
-    int childProcessRamMb = 2048;
+    int childProcessRamMb = 1440;
   }
 
   private static CommandLineOptions commandLineOptions = new CommandLineOptions();

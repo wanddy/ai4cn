@@ -74,7 +74,7 @@ public final class YoungAndroidWebStartSupport extends WebStartSupport {
           return;
         }
         // Create jnlp file and send it back
-        String jnlp = prepareJnlpForJsonpServer(req, "1.5+", "925m",
+        String jnlp = prepareJnlpForJsonpServer(req, "1.5+", "625m",
             ResourceUtil.CODEBLOCKS_JAR, ResourceUtil.CODEBLOCKS_MAIN,
             "App Inventor for Android Blocks Editor",  // title
             "App Inventor for Android Blocks Editor"); // description

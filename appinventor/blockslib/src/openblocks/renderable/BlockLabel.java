@@ -44,12 +44,12 @@ public class BlockLabel implements MouseListener, MouseMotionListener, KeyListen
   /**Enum for the different types of labels in codeblocks */
   public enum Type { NAME_LABEL, PAGE_LABEL, PORT_LABEL, DATA_LABEL, DECORATOR_LABEL }
 
-  public final static Font blockFontSmall_Bold  = new Font("Arial", Font.BOLD, 7);
-  public final static Font blockFontMedium_Bold = new Font("Arial", Font.BOLD, 10);
-  public final static Font blockFontLarge_Bold  = new Font("Arial", Font.BOLD, 12);
-  public final static Font blockFontSmall_Plain  = new Font("Arial", Font.PLAIN, 7);
-  public final static Font blockFontMedium_Plain = new Font("Arial", Font.PLAIN, 10);
-  public final static Font blockFontLarge_Plain  = new Font("Arial", Font.PLAIN, 12);
+  public final static Font blockFontSmall_Bold  = new Font("宋体", Font.BOLD, 7);
+  public final static Font blockFontMedium_Bold = new Font("宋体", Font.BOLD, 10);
+  public final static Font blockFontLarge_Bold  = new Font("宋体", Font.BOLD, 12);
+  public final static Font blockFontSmall_Plain  = new Font("宋体", Font.PLAIN, 7);
+  public final static Font blockFontMedium_Plain = new Font("宋体", Font.PLAIN, 10);
+  public final static Font blockFontLarge_Plain  = new Font("宋体", Font.PLAIN, 12);
 
   private LabelWidget widget;
   /** These keys inputs are delegated back to renderable block */
