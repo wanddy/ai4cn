@@ -224,14 +224,18 @@ public final class Compiler {
     LOG.log(Level.INFO, "VCode: " + project.getVCode());
     LOG.log(Level.INFO, "VName: " + project.getVName());
     //WANDDY
-    String screen1Title=projectName;
+    String WANDDYTitle=projectName;
+    int WANDDYstyle=1;
     try{
     Iterator it=this.componentTypes.iterator();
     while(it.hasNext()){
     	String tmp=it.next().toString();
     	if(tmp.startsWith("WANDDY"))
     	{
-    		screen1Title=tmp.substring(6);
+    		if(tmp.substring(6).startsWith(".")&&tmp.length()==8)
+    			WANDDYstyle=Integer.parseInt(tmp.substring(7));//like string "WANDDY.1"=LEFT "WANDDY.2"=RIGHT "WANDDY.3"=CENTER
+    		else
+    			WANDDYTitle=tmp.substring(6);//like string "WANDDYMY APP"
     	}
     }
     }catch(Exception ex)
@@ -298,8 +302,14 @@ public final class Compiler {
       // TODONE(jis): Turned off debuggable. No one really uses it and it represents a security
       // risk for App Inventor App end-users.
       out.write("android:debuggable=\"false\" ");
-      out.write("android:label=\"" + screen1Title + "\" ");
+      out.write("android:label=\"" + WANDDYTitle + "\" ");
       out.write("android:icon=\"@drawable/ya\" ");
+      switch(WANDDYstyle)
+      {
+      	case 3:out.write("android:theme=\"@android:style/Theme.NoTitleBar\" ");break;
+      	case 2:out.write("android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" ");break;
+      	default:break;
+      }
       if (isForWireless) {              // This is to hook into ACRA
         out.write("android:name=\"com.google.appinventor.components.runtime.ReplApplication\" ");
       }
@@ -308,6 +318,7 @@ public final class Compiler {
       for (Project.SourceDescriptor source : project.getSources()) {
         String formClassName = source.getQualifiedName();
         //String screenName = formClassName.substring(formClassName.lastIndexOf('.') + 1);
+        if(!formClassName.equals("WANDDY")){
         boolean isMain = formClassName.equals(mainClass);
 
         if (isMain) {
@@ -330,6 +341,7 @@ public final class Compiler {
         }
         out.write("      </intent-filter>\n");
         out.write("    </activity>\n");
+        }
       }
 
       // ListPickerActivity

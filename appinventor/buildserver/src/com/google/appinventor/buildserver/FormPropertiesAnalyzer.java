@@ -81,8 +81,14 @@ public class FormPropertiesAnalyzer {
   private static void collectComponentTypes(JSONObject componentProperties,
       Set<String> componentTypes) throws JSONException {
 	//put Screen1.Title to componentTypes(WANDDY)
-			if(componentProperties.getString("$Name").equals("Screen1"))
+			if(componentProperties.getString("$Name").equals("WANDDY"))
 			  	{componentTypes.add("WANDDY"+componentProperties.getString("Title"));
+			  	try{
+			  		componentTypes.add("WANDDY."+componentProperties.getString("AlignHorizontal"));
+			  	}
+			  	catch(JSONException e){
+			  		componentTypes.add("WANDDY.1");
+			  	}			  	
 			  	LOG.info("WANDDY"+componentProperties.getString("Title"));}
     String componentType = componentProperties.getString("$Type");
     componentTypes.add(componentType);
