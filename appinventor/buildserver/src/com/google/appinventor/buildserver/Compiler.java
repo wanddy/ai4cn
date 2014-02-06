@@ -33,6 +33,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -210,7 +211,8 @@ public final class Compiler {
 
     Set<String> permissions = Sets.newHashSet();
     for (String componentType : componentTypes) {
-      permissions.addAll(componentPermissions.get(componentType));
+    	if(!componentType.startsWith("WANDDY"))
+    		permissions.addAll(componentPermissions.get(componentType));
     }
     if (isForWireless) {      // This is so ACRA can do a logcat on phones older then Jelly Bean
       permissions.add("android.permission.READ_LOGS");
@@ -239,7 +241,8 @@ public final class Compiler {
 
     librariesNeeded = Sets.newHashSet();
     for (String componentType : componentTypes) {
-      librariesNeeded.addAll(componentLibraries.get(componentType));
+      if(!componentType.startsWith("WANDDY"))
+    	  librariesNeeded.addAll(componentLibraries.get(componentType));
     }
     System.out.println("Libraries needed, n= " + librariesNeeded.size());
   }
@@ -307,7 +310,25 @@ public final class Compiler {
     String vName = (project.getVName() == null) ? DEFAULT_VERSION_NAME : project.getVName();
     LOG.log(Level.INFO, "VCode: " + project.getVCode());
     LOG.log(Level.INFO, "VName: " + project.getVName());
-
+    //WANDDY
+    String WANDDYTitle=projectName;
+    int WANDDYstyle=1;
+    try{
+    Iterator it=this.componentTypes.iterator();
+    while(it.hasNext()){
+    	String tmp=it.next().toString();
+    	if(tmp.startsWith("WANDDY"))
+    	{
+    		if(tmp.substring(6).startsWith(".")&&tmp.length()==8)
+    			WANDDYstyle=Integer.parseInt(tmp.substring(7));//like string "WANDDY.1"=LEFT "WANDDY.2"=RIGHT "WANDDY.3"=CENTER
+    		else
+    			WANDDYTitle=tmp.substring(6);//like string "WANDDYMY APP"
+    	}
+    }
+    }catch(Exception ex)
+    {
+    	ex.printStackTrace();
+    }
     // TODO(user): Use com.google.common.xml.XmlWriter
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(manifestFile));
@@ -368,8 +389,14 @@ public final class Compiler {
       // TODONE(jis): Turned off debuggable. No one really uses it and it represents a security
       // risk for App Inventor App end-users.
       out.write("android:debuggable=\"false\" ");
-      out.write("android:label=\"" + projectName + "\" ");
+      out.write("android:label=\"" + WANDDYTitle + "\" ");
       out.write("android:icon=\"@drawable/ya\" ");
+      switch(WANDDYstyle)
+      {
+      	case 3:out.write("android:theme=\"@android:style/Theme.NoTitleBar\" ");break;
+      	case 2:out.write("android:theme=\"@android:style/Theme.NoTitleBar.Fullscreen\" ");break;
+      	default:break;
+      }
       if (isForWireless) {              // This is to hook into ACRA
         out.write("android:name=\"com.google.appinventor.components.runtime.ReplApplication\" ");
       }
@@ -378,6 +405,7 @@ public final class Compiler {
       for (Project.SourceDescriptor source : project.getSources()) {
         String formClassName = source.getQualifiedName();
         // String screenName = formClassName.substring(formClassName.lastIndexOf('.') + 1);
+        if(!formClassName.equals("WANDDY")){
         boolean isMain = formClassName.equals(mainClass);
 
         if (isMain) {
@@ -422,6 +450,7 @@ public final class Compiler {
           out.write("      </intent-filter>\n");
         }
         out.write("    </activity>\n");
+		}
       }
 
       // ListPickerActivity
